@@ -4,3 +4,10 @@ export interface Weather {
     temperature: string;
     data:number;
 }
+
+export interface WeatherBox {
+    category: string;
+    temperature: number;
+    timestamp: string;
+    value: number;
+}

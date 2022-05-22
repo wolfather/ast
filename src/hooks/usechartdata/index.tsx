@@ -4,7 +4,6 @@ import { Weather } from '../../entity/weather.interface';
 import { convertToDate } from '../../utils/converttodate';
 import { groupBy } from '../../utils/group';
 
-
 const _useChartData = () => {
   const [weatherHistory, setWeatherHistory] = useState<Weather[]>([]);
   const [status, setStatus] = useState<string>('');
@@ -13,8 +12,6 @@ const _useChartData = () => {
   const { lastMessage, readyState } = useWebSocket('ws://localhost:8999/', {
     shouldReconnect: (closeEvent) => true,
   });
-
-  const [weatherData, setWeatherData] = useState<Weather[]>([]);
 
   const connectionStatus = {
     [ReadyState.CONNECTING]: 'Connecting',
@@ -28,13 +25,16 @@ const _useChartData = () => {
     if (lastMessage) {
       const _weatherData = JSON.parse(lastMessage?.data)
         .map((weather: Weather) => {
-          const _data = weather.data < 100 ? weather.data : 0
+          let _data = undefined;
+
+          if(weather.data < 100) {
+            _data = weather.data;
+          }
+
           return {...weather, data: _data};
         });
 
       setWeatherHistory(prev => [...prev, ..._weatherData]);
-      
-      setWeatherData(_weatherData);
     }
   }, [lastMessage, setWeatherHistory]);
 
@@ -44,8 +44,9 @@ const _useChartData = () => {
       .map((histories: any, index: number) => {
         const data = histories.map((history: any) => {
           return {
-            category: index === 0 ? 'id-1' : 'id-2',
-            value: history.data,
+            category: index === 0 ? 'ID 1' : 'ID 2',
+            value: history.data !== undefined ? history.data : 0,
+            temperature: history.temperature,
             timestamp: convertToDate(history.timestamp),
           }
         });
@@ -65,9 +66,9 @@ const _useChartData = () => {
   }, [weatherHistory]);
 
   useEffect(() => {
-    poolingMessage();
-
-      if(connectionStatus === 'Open' || 'Closed') {
+    
+    if(connectionStatus === 'Open' || 'Closed') {
+        poolingMessage();
         setStatus(connectionStatus);
       }
       
@@ -75,10 +76,9 @@ const _useChartData = () => {
         setChartData(getChartData);
       }
 
-  }, [poolingMessage, connectionStatus, setChartData]);
+  }, [poolingMessage, connectionStatus, setChartData, getChartData]);
 
-
-  return {weatherData, weatherHistory, status, chartData};
+  return { weatherHistory, status, chartData };
 }
 
 

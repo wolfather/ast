@@ -2,11 +2,11 @@ import { Title } from "./styles"
 
 
 type TitleProps = {
-    tempId: number;
+    tempId: string;
 }
 
 export const WeatherTitle = ({tempId}: TitleProps) => {
     return (
-        <Title>ID {tempId}</Title>
+        <Title>{tempId}</Title>
     )
 }

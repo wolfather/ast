@@ -4,7 +4,7 @@ import { WeatherValue } from "../Atoms/WeatherValue";
 import { Container } from "./styles";
 
 export type TempProps = {
-    tempId: number;
+    tempId: string;
     tempValue: string;
 }
 

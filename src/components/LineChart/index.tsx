@@ -22,8 +22,6 @@ const _Chart: FC<PropsChart> = (props: PropsChart) => {
     if(props.data.datasets) {
       setChart(props.data.datasets)
     }
-    console.log(chart);
-    
   }, [props.data, chart])
   
   if(!props.data) {
