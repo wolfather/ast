@@ -6,9 +6,6 @@ in the cmd/terminal type: yarn install
 ## How to run the project
 in the cmd/terminal type: yarn start or npm run start
 
-## Briefing
-![Briefing](./briefing.png)
-
 ## DEMO
 ![App demonstration](./demo.gif)
 
